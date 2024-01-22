@@ -1,32 +1,26 @@
 #include "monty.h"
 /**
- * f_add - adds the top two elements of the stack.
- * @head: stack head
- * @counter: line_number
- * Return: no return
-*/
-void f_add(stack_t **head, unsigned int counter)
+  *f_rotl- rotates the stack to the top
+  *@head: stack head
+  *@counter: line_number
+  *Return: no return
+ */
+void f_rotl(stack_t **head,  __attribute__((unused)) unsigned int counter)
 {
-	stack_t *h;
-	int len = 0, aux;
+	stack_t *tmp = *head, *aux;
 
-	h = *head;
-	while (h)
+	if (*head == NULL || (*head)->next == NULL)
 	{
-		h = h->next;
-		len++;
+		return;
 	}
-	if (len < 2)
+	aux = (*head)->next;
+	aux->prev = NULL;
+	while (tmp->next != NULL)
 	{
-		fprintf(stderr, "L%d: can't add, stack too short\n", counter);
-		fclose(bus.file);
-		free(bus.content);
-		free_stack(*head);
-		exit(EXIT_FAILURE);
+		tmp = tmp->next;
 	}
-	h = *head;
-	aux = h->n + h->next->n;
-	h->next->n = aux;
-	*head = h->next;
-	free(h);
+	tmp->next = *head;
+	(*head)->next = NULL;
+	(*head)->prev = tmp;
+	(*head) = aux;
 }
